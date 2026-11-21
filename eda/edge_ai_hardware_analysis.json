@@ -1,0 +1,66 @@
+{
+  "table": [
+    {
+      "w": 32,
+      "params": 1281,
+      "bytes_f32": 5124,
+      "bytes_int8": 1281,
+      "fits_300kb_sram_f32": true,
+      "fits_300kb_sram_int8": true,
+      "fits_8mb_psram": true,
+      "macs": 1216
+    },
+    {
+      "w": 128,
+      "params": 17409,
+      "bytes_f32": 69636,
+      "bytes_int8": 17409,
+      "fits_300kb_sram_f32": true,
+      "fits_300kb_sram_int8": true,
+      "fits_8mb_psram": true,
+      "macs": 17152
+    },
+    {
+      "w": 256,
+      "params": 67585,
+      "bytes_f32": 270340,
+      "bytes_int8": 67585,
+      "fits_300kb_sram_f32": true,
+      "fits_300kb_sram_int8": true,
+      "fits_8mb_psram": true,
+      "macs": 67072
+    },
+    {
+      "w": 512,
+      "params": 266241,
+      "bytes_f32": 1064964,
+      "bytes_int8": 266241,
+      "fits_300kb_sram_f32": false,
+      "fits_300kb_sram_int8": true,
+      "fits_8mb_psram": true,
+      "macs": 265216
+    },
+    {
+      "w": 2048,
+      "params": 4210689,
+      "bytes_f32": 16842756,
+      "bytes_int8": 4210689,
+      "fits_300kb_sram_f32": false,
+      "fits_300kb_sram_int8": false,
+      "fits_8mb_psram": false,
+      "macs": 4206592
+    }
+  ],
+  "max_width_sram_f32": 273,
+  "max_width_sram_int8": 550,
+  "selected_model": {
+    "architecture": "5 -> 32 -> 32 -> 1",
+    "params": 1281,
+    "bytes_f32": 5124,
+    "bytes_int8": 1281,
+    "macs": 1216,
+    "activation_memory_peak_bytes": 128,
+    "fits_300kb_sram_f32": true,
+    "fits_300kb_sram_int8": true
+  }
+}

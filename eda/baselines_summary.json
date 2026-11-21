@@ -1,0 +1,16 @@
+{
+  "train_rows": 1581,
+  "val_rows": 395,
+  "baseline1_mean_prediction": 68.28431701660156,
+  "baseline1_val_mae": 42.85403823852539,
+  "baseline2_coefficients": {
+    "battery_v": 157.231689453125,
+    "temp_c": -0.8872578144073486,
+    "rings_per_day": -2.3266994953155518,
+    "wifi_rssi_dbm": 1.767065167427063,
+    "age_months": -0.9568845629692078
+  },
+  "baseline2_intercept": -348.8854064941406,
+  "baseline2_val_mae": 18.632389068603516,
+  "baseline2_val_mae_clipped": 16.995210647583008
+}
