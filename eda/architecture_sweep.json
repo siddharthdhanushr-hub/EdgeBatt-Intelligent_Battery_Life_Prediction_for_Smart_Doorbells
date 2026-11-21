@@ -1,0 +1,147 @@
+[
+  {
+    "architecture": "5 -> 4 -> 1",
+    "hidden": [
+      4
+    ],
+    "num_layers": 1,
+    "params": 29,
+    "bytes_f32": 116,
+    "bytes_int8": 29,
+    "macs": 24,
+    "train_mae": 11.155,
+    "val_mae": 11.426,
+    "overfit_gap": 0.271
+  },
+  {
+    "architecture": "5 -> 8 -> 1",
+    "hidden": [
+      8
+    ],
+    "num_layers": 1,
+    "params": 57,
+    "bytes_f32": 228,
+    "bytes_int8": 57,
+    "macs": 48,
+    "train_mae": 14.935,
+    "val_mae": 14.995,
+    "overfit_gap": 0.06
+  },
+  {
+    "architecture": "5 -> 16 -> 1",
+    "hidden": [
+      16
+    ],
+    "num_layers": 1,
+    "params": 113,
+    "bytes_f32": 452,
+    "bytes_int8": 113,
+    "macs": 96,
+    "train_mae": 14.96,
+    "val_mae": 15.084,
+    "overfit_gap": 0.124
+  },
+  {
+    "architecture": "5 -> 32 -> 1",
+    "hidden": [
+      32
+    ],
+    "num_layers": 1,
+    "params": 225,
+    "bytes_f32": 900,
+    "bytes_int8": 225,
+    "macs": 192,
+    "train_mae": 9.342,
+    "val_mae": 9.658,
+    "overfit_gap": 0.316
+  },
+  {
+    "architecture": "5 -> 64 -> 1",
+    "hidden": [
+      64
+    ],
+    "num_layers": 1,
+    "params": 449,
+    "bytes_f32": 1796,
+    "bytes_int8": 449,
+    "macs": 384,
+    "train_mae": 14.889,
+    "val_mae": 15.021,
+    "overfit_gap": 0.131
+  },
+  {
+    "architecture": "5 -> 4 -> 4 -> 1",
+    "hidden": [
+      4,
+      4
+    ],
+    "num_layers": 2,
+    "params": 49,
+    "bytes_f32": 196,
+    "bytes_int8": 49,
+    "macs": 40,
+    "train_mae": 8.343,
+    "val_mae": 8.737,
+    "overfit_gap": 0.394
+  },
+  {
+    "architecture": "5 -> 8 -> 8 -> 1",
+    "hidden": [
+      8,
+      8
+    ],
+    "num_layers": 2,
+    "params": 129,
+    "bytes_f32": 516,
+    "bytes_int8": 129,
+    "macs": 112,
+    "train_mae": 4.645,
+    "val_mae": 5.685,
+    "overfit_gap": 1.04
+  },
+  {
+    "architecture": "5 -> 16 -> 16 -> 1",
+    "hidden": [
+      16,
+      16
+    ],
+    "num_layers": 2,
+    "params": 385,
+    "bytes_f32": 1540,
+    "bytes_int8": 385,
+    "macs": 352,
+    "train_mae": 4.224,
+    "val_mae": 4.987,
+    "overfit_gap": 0.763
+  },
+  {
+    "architecture": "5 -> 32 -> 32 -> 1",
+    "hidden": [
+      32,
+      32
+    ],
+    "num_layers": 2,
+    "params": 1281,
+    "bytes_f32": 5124,
+    "bytes_int8": 1281,
+    "macs": 1216,
+    "train_mae": 3.62,
+    "val_mae": 4.638,
+    "overfit_gap": 1.018
+  },
+  {
+    "architecture": "5 -> 64 -> 64 -> 1",
+    "hidden": [
+      64,
+      64
+    ],
+    "num_layers": 2,
+    "params": 4609,
+    "bytes_f32": 18436,
+    "bytes_int8": 4609,
+    "macs": 4480,
+    "train_mae": 3.09,
+    "val_mae": 4.718,
+    "overfit_gap": 1.627
+  }
+]
