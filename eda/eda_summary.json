@@ -1,0 +1,19 @@
+{
+  "raw_rows": 2000,
+  "glitch_rows": 24,
+  "clean_rows": 1976,
+  "glitch_breakdown": {
+    "battery_v_zero": 8,
+    "temp_c_minus_127": 7,
+    "wifi_rssi_zero": 9,
+    "unique_union": 24
+  },
+  "correlation_with_days_left": {
+    "battery_v": 0.7135023591683638,
+    "temp_c": -0.14889243642933128,
+    "rings_per_day": -0.23153748675040323,
+    "wifi_rssi_dbm": 0.4052088375058491,
+    "age_months": -0.17151462772880555,
+    "days_left": 1.0
+  }
+}
