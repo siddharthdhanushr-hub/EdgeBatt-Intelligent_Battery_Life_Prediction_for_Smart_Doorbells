@@ -15,39 +15,7 @@
 
 ## 👥 Contributors & Team Roles
 
-<p align="center">
-  <a href="https://github.com/monicaguru10">
-    <img src="https://avatars.githubusercontent.com/u/239998788?v=4" width="75px" style="border-radius:50%;" alt="Monica K G"/>
-    <br />
-    <sub><b>Monica K G</b></sub>
-    <br />
-    <sub><code>@monicaguru10</code></sub>
-  </a>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://github.com/siddharthdhanushr-hub">
-    <img src="https://avatars.githubusercontent.com/u/121683115?v=4" width="75px" style="border-radius:50%;" alt="Siddharth Dhanush R"/>
-    <br />
-    <sub><b>Siddharth Dhanush R</b></sub>
-    <br />
-    <sub><code>@siddharthdhanushr-hub</code></sub>
-  </a>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://github.com/WhiteDevil-06">
-    <img src="https://avatars.githubusercontent.com/u/179292012?v=4" width="75px" style="border-radius:50%;" alt="Rakshith Raghavendra"/>
-    <br />
-    <sub><b>Rakshith Raghavendra</b></sub>
-    <br />
-    <sub><code>@WhiteDevil-06</code></sub>
-  </a>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="#-contributors--team-roles">
-    <img src="https://ui-avatars.com/api/?name=Saakshi+V+P&background=2a9d8f&color=fff&size=150" width="75px" style="border-radius:50%;" alt="Saakshi V P"/>
-    <br />
-    <sub><b>Saakshi V P</b></sub>
-    <br />
-    <sub><code>Team 01</code></sub>
-  </a>
-</p>
+
 
 | Contributor | Role & Domain | Primary Responsibilities & Key Deliverables |
 |---|---|---|
