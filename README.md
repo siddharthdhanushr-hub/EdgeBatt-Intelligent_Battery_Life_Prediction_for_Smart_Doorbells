@@ -2,11 +2,17 @@
 
 **AI255TBD Edge AI · Module 1 Assignment: Neural Networks from Scratch to Deployment**  
 **Team 01 — Paradise**  
-**Members:**  
-- **Monica K G** — Integration, Load Testing & Verification Lead  
-- **Siddharth Dhanush R** — Exploratory Data Analysis (EDA) & PyTorch Model Development  
-- **Rakshith Raghavendra** — FastAPI Backend & Web Dashboard Controller  
-- **Saakshi V P** — Testing, Benchmarking & Edge Deployment Audit  
+
+---
+
+## 👥 Contributors & Team Roles
+
+| Contributor | Role & Domain | Primary Responsibilities & Key Deliverables |
+|---|---|---|
+| **Monica K G** | **Integration, Multi-Load Testing & Verification Lead** | • End-to-end integration of Model, API, and Web Dashboard<br>• Multi-load stress testing (concurrency, connection churn, batch scaling, endurance)<br>• Hidden neuron architecture exploration (4, 8, 16, 32, 64) & Pareto frontier analysis<br>• Automated pre-flight instructor verification suite & technical reports |
+| **Siddharth Dhanush R** | **EDA & PyTorch Model Development Lead** | • Exploratory Data Analysis (EDA) & feature correlation visualization<br>• Sensor glitch identification & dataset cleaning rule definition<br>• Baseline models (mean baseline & linear regression via OLS)<br>• PyTorch `BatteryNet` model training, normalization & weights serialization |
+| **Rakshith Raghavendra** | **FastAPI Backend & Web Dashboard Controller** | • Production FastAPI model serving engine (`app/main.py`)<br>• Sensor bounds validation & glitch rejection (HTTP 422)<br>• Sub-millisecond stage-wise micro-timing (`parse`, `normalise`, `infer`, `build`)<br>• EdgeBatt dark-mode IoT diagnostics web dashboard & SVG battery gauge |
+| **Saakshi V P** | **Testing, Benchmarking & Hardware Feasibility Lead** | • Automated API endpoint test suite verification<br>• Outer-loop latency benchmarking (`client/bench.py`)<br>• ESP32-S3 microcontroller SRAM & PSRAM memory profiling<br>• Batch vs. single-prediction numerical determinism audit |
 
 ---
 
