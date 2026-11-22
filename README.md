@@ -1,11 +1,53 @@
 # EdgeBatt: Intelligent Battery Life Prediction for Smart Doorbells
 
+<p align="left">
+  <img src="https://img.shields.io/github/contributors/siddharthdhanushr-hub/EdgeBatt-Intelligent_Battery_Life_Prediction_for_Smart_Doorbells?color=2a9d8f&label=Active%20Contributors&style=for-the-badge" alt="Active Contributors" />
+  &nbsp;
+  <img src="https://img.shields.io/badge/Validation%20MAE-4.64%20days-success?style=for-the-badge" alt="Validation MAE" />
+  &nbsp;
+  <img src="https://img.shields.io/badge/Team-01%20Paradise-blue?style=for-the-badge" alt="Team 01" />
+</p>
+
 **AI255TBD Edge AI · Module 1 Assignment: Neural Networks from Scratch to Deployment**  
 **Team 01 — Paradise**  
 
 ---
 
 ## 👥 Contributors & Team Roles
+
+<p align="center">
+  <a href="https://github.com/monicaguru10">
+    <img src="https://avatars.githubusercontent.com/u/239998788?v=4" width="75px" style="border-radius:50%;" alt="Monica K G"/>
+    <br />
+    <sub><b>Monica K G</b></sub>
+    <br />
+    <sub><code>@monicaguru10</code></sub>
+  </a>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/siddharthdhanushr-hub">
+    <img src="https://avatars.githubusercontent.com/u/121683115?v=4" width="75px" style="border-radius:50%;" alt="Siddharth Dhanush R"/>
+    <br />
+    <sub><b>Siddharth Dhanush R</b></sub>
+    <br />
+    <sub><code>@siddharthdhanushr-hub</code></sub>
+  </a>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/WhiteDevil-06">
+    <img src="https://avatars.githubusercontent.com/u/179292012?v=4" width="75px" style="border-radius:50%;" alt="Rakshith Raghavendra"/>
+    <br />
+    <sub><b>Rakshith Raghavendra</b></sub>
+    <br />
+    <sub><code>@WhiteDevil-06</code></sub>
+  </a>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="#-contributors--team-roles">
+    <img src="https://ui-avatars.com/api/?name=Saakshi+V+P&background=2a9d8f&color=fff&size=150" width="75px" style="border-radius:50%;" alt="Saakshi V P"/>
+    <br />
+    <sub><b>Saakshi V P</b></sub>
+    <br />
+    <sub><code>Team 01</code></sub>
+  </a>
+</p>
 
 | Contributor | Role & Domain | Primary Responsibilities & Key Deliverables |
 |---|---|---|
