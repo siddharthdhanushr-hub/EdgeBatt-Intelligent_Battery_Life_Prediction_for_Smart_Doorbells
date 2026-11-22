@@ -1,0 +1,179 @@
+{
+  "connection_status": "VERIFIED_OPERATIONAL",
+  "glitch_tests": [
+    {
+      "name": "Voltage Disconnect (0V)",
+      "status_code": 422,
+      "passed": true
+    },
+    {
+      "name": "Temperature Sensor Glitch (-127C)",
+      "status_code": 422,
+      "passed": true
+    },
+    {
+      "name": "Wi-Fi Beacon Dropout (0 dBm)",
+      "status_code": 422,
+      "passed": true
+    },
+    {
+      "name": "Negative Ring Count (-5)",
+      "status_code": 422,
+      "passed": true
+    },
+    {
+      "name": "Extreme Voltage Overcharge (6.0V)",
+      "status_code": 422,
+      "passed": true
+    }
+  ],
+  "batch_single_consistency": {
+    "max_diff_days": 0.0,
+    "passed": true
+  },
+  "sequential_baseline": {
+    "throughput_rps": 322.61,
+    "summary": {
+      "round_trip": {
+        "p50": 3.116,
+        "p95": 3.714,
+        "p99": 3.955
+      },
+      "parse": {
+        "p50": 0.047,
+        "p95": 0.065,
+        "p99": 0.153
+      },
+      "normalise": {
+        "p50": 0.067,
+        "p95": 0.081,
+        "p99": 0.097
+      },
+      "inference": {
+        "p50": 0.256,
+        "p95": 0.321,
+        "p99": 0.433
+      },
+      "build": {
+        "p50": 0.031,
+        "p95": 0.042,
+        "p99": 0.049
+      },
+      "server_total": {
+        "p50": 0.423,
+        "p95": 0.532,
+        "p99": 0.692
+      },
+      "network_and_framework": {
+        "p50": 2.681,
+        "p95": 3.192,
+        "p99": 3.329
+      }
+    }
+  },
+  "connection_churn_load": {
+    "keep_alive_p50_ms": 3.116,
+    "non_keep_alive_p50_ms": 4.378,
+    "tcp_handshake_overhead_ms": 1.262
+  },
+  "concurrency_load": {
+    "5_workers": {
+      "total_requests": 50,
+      "errors": 0,
+      "throughput_rps": 510.57,
+      "p50_ms": 9.043,
+      "p95_ms": 13.727,
+      "p99_ms": 14.887
+    },
+    "10_workers": {
+      "total_requests": 100,
+      "errors": 0,
+      "throughput_rps": 425.85,
+      "p50_ms": 19.593,
+      "p95_ms": 41.14,
+      "p99_ms": 42.122
+    },
+    "25_workers": {
+      "total_requests": 250,
+      "errors": 0,
+      "throughput_rps": 449.44,
+      "p50_ms": 43.224,
+      "p95_ms": 105.408,
+      "p99_ms": 108.556
+    },
+    "50_workers": {
+      "total_requests": 500,
+      "errors": 0,
+      "throughput_rps": 342.93,
+      "p50_ms": 141.256,
+      "p95_ms": 204.938,
+      "p99_ms": 211.678
+    }
+  },
+  "batch_scaling_load": {
+    "batch_1": {
+      "batch_size": 1,
+      "round_trip_ms": 3.832,
+      "inference_ms": 0.297,
+      "server_total_ms": 0.534,
+      "inference_us_per_reading": 297.0
+    },
+    "batch_10": {
+      "batch_size": 10,
+      "round_trip_ms": 3.203,
+      "inference_ms": 0.314,
+      "server_total_ms": 0.537,
+      "inference_us_per_reading": 31.4
+    },
+    "batch_50": {
+      "batch_size": 50,
+      "round_trip_ms": 3.62,
+      "inference_ms": 0.241,
+      "server_total_ms": 0.625,
+      "inference_us_per_reading": 4.82
+    },
+    "batch_100": {
+      "batch_size": 100,
+      "round_trip_ms": 3.918,
+      "inference_ms": 0.318,
+      "server_total_ms": 0.909,
+      "inference_us_per_reading": 3.18
+    },
+    "batch_400": {
+      "batch_size": 400,
+      "round_trip_ms": 10.341,
+      "inference_ms": 2.644,
+      "server_total_ms": 4.66,
+      "inference_us_per_reading": 6.61
+    },
+    "batch_1000": {
+      "batch_size": 1000,
+      "round_trip_ms": 11.169,
+      "inference_ms": 0.442,
+      "server_total_ms": 5.489,
+      "inference_us_per_reading": 0.442
+    },
+    "batch_5000": {
+      "batch_size": 5000,
+      "round_trip_ms": 35.025,
+      "inference_ms": 1.044,
+      "server_total_ms": 19.794,
+      "inference_us_per_reading": 0.209
+    }
+  },
+  "fault_injection_load": {
+    "valid_passed": 80,
+    "glitches_rejected": 40,
+    "unexpected": 0
+  },
+  "endurance_load": {
+    "chunk_avg_latencies_ms": [
+      1.637,
+      1.379,
+      1.391,
+      1.534,
+      1.107
+    ],
+    "latency_drift_ms": -0.53
+  }
+}
