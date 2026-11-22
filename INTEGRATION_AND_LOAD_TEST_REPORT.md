@@ -1,12 +1,12 @@
 # EdgeBatt: Model, Website & API Integration & Multi-Load Test Report
 
 **Team:** EDGI AI Team 01 (Paradise)  
-**Author:** Person 3 â€” Monica (Integration & Testing Lead)  
+**Author:** Monica (Integration & Testing Lead)  
 **Teammates:** Siddharth (EDA & Model), Rakshith (FastAPI & Dashboard), Saakshi (Testing & Verification)  
 **Test Date:** 2026-11-22  
 **Target Host:** Uvicorn / FastAPI Backend + EdgeBatt Web Dashboard (`http://127.0.0.1:8000`)
 
----
+
 
 ## 1. Executive Summary
 
@@ -15,7 +15,7 @@ As the Integration & Verification Lead ("Putting It All Together"), an exhaustiv
 2. **Model Serving Pipeline**: Siddharth's trained PyTorch `BatteryNet` (`5 -> 32 -> 32 -> 1`) in `model/model.pt` is accurately reconstructed via `model/config.json`, executing sub-millisecond predictions using exact training normalization parameters.
 3. **Resilience Under Multi-Load Scenarios**: The integrated system was subjected to 6 distinct operational load profiles comprising over 1,700 requestsâ€”achieving **100% success rate (zero 5xx errors or dropped connections)**.
 
----
+
 
 ## 2. Integrated Architecture & Connectivity Verification
 
@@ -29,7 +29,7 @@ As the Integration & Verification Lead ("Putting It All Together"), an exhaustiv
 | **Single Inference** | `POST /predict` | Returns `days_left` and 5 non-overlapping stage timings | `days_left: 113.71`, server total: `0.423 ms` | **PASS** |
 | **Batch Inference** | `POST /predict_batch`| Vectorized inference matching single predictions | Evaluated 50 readings; max divergence = `0.0000 days` | **PASS** |
 
----
+
 
 ## 3. Physical Sensor Glitch & Negative Validation Suite
 
@@ -43,7 +43,7 @@ To ensure compliance with Mission 3, physical bounds were tested against the API
 | **GL-04** | Corrupted Ring Count | `rings_per_day = -5.0` | HTTP 422 (`ge=0.0`) | HTTP 422 Unprocessable Entity | **PASS** |
 | **GL-05** | Overvoltage Condition | `battery_v = 6.0V` | HTTP 422 (`le=5.0`) | HTTP 422 Unprocessable Entity | **PASS** |
 
----
+
 
 ## 4. Multi-Load Testing Results
 
@@ -64,14 +64,14 @@ network_and_framework        2.681     3.192     3.329
 ```
 *Key Finding:* Median server execution time is **0.423 ms**, with neural network inference taking only **0.256 ms**. Over 86% of the round trip is TCP/loopback loop time and framework overhead.
 
----
+
 
 ### Load Type 2: Protocol Churn (Keep-Alive vs. Non-Keep-Alive)
 - **HTTP Keep-Alive p50:** **3.116 ms**
 - **Non-Keep-Alive (`Connection: close`) p50:** **4.378 ms**
 - **Handshake Penalty:** **+1.262 ms** (a $40.5\%$ latency overhead due to repeated TCP connection setups).
 
----
+
 
 ### Load Type 3: High Concurrency / Burst Load
 Simulated concurrent IoT doorbell telemetry streams using multi-threaded asynchronous workers:
@@ -85,7 +85,7 @@ Simulated concurrent IoT doorbell telemetry streams using multi-threaded asynchr
 
 *Result:* Zero socket drops, zero HTTP 500 errors, stable graceful queuing up to 50 concurrent connections.
 
----
+
 
 ### Load Type 4: Vectorized Batch Scaling Load
 Tested single requests containing scaling arrays of sensor readings from 1 to 5,000 doorbells:
@@ -102,7 +102,7 @@ Tested single requests containing scaling arrays of sensor readings from 1 to 5,
 
 *Takeaway:* PyTorch tensor vectorization processes 5,000 battery predictions in only **1.044 ms** of inference time, demonstrating extreme edge efficiency.
 
----
+
 
 ### Load Type 5: Fault Injection Under Traffic
 - Stream of 120 interleaved requests (70% valid telemetry, 30% sensor glitches).
@@ -110,7 +110,7 @@ Tested single requests containing scaling arrays of sensor readings from 1 to 5,
 - **40 Glitch Requests:** Immediately trapped and rejected with HTTP 422.
 - **0 Unexpected Failures:** Zero server crashes or corrupted states.
 
----
+
 
 ### Load Type 6: Sustained Endurance & Memory Leak Check
 500 consecutive requests partitioned into 5 temporal chunks:
@@ -121,7 +121,7 @@ Tested single requests containing scaling arrays of sensor readings from 1 to 5,
 - Chunk 5 (Reqs 401â€“500): **1.107 ms/req**
 - **Net Latency Drift:** **-0.530 ms** (Latency decreased and stabilized due to JIT cache warming; zero memory leakage).
 
----
+
 
 ## 5. Verification Conclusion
 
