@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EdgeBatt — Smart Doorbell Battery Intelligence | EDGI AI Team 01</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Top Navigation & Live Telemetry Bar -->
+    <header class="header">
+      <div class="brand">
+        <div class="brand-logo">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="16" height="10" rx="2" ry="2"></rect>
+            <line x1="22" y1="11" x2="22" y2="13"></line>
+            <line x1="6" y1="12" x2="10" y2="12"></line>
+            <line x1="8" y1="10" x2="8" y2="14"></line>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">EdgeBatt <span class="badge-tag">Team 01</span></h1>
+          <p class="brand-subtitle">Smart Doorbell Battery Intelligence & Edge Inference</p>
+        </div>
+      </div>
+
+      <div class="telemetry-bar">
+        <div class="telemetry-pill" id="healthPill">
+          <span class="beacon-dot" id="beaconDot"></span>
+          <span id="apiStatusText">Checking API...</span>
+        </div>
+        <div class="telemetry-stat">
+          <span class="stat-label">Model Params</span>
+          <span class="stat-value font-mono" id="statParams">--</span>
+        </div>
+        <div class="telemetry-stat">
+          <span class="stat-label">Val MAE</span>
+          <span class="stat-value font-mono" id="statValMae">--</span>
+        </div>
+        <div class="header-links">
+          <a href="/docs" target="_blank" class="btn-ghost" title="Open API Documentation">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            Swagger Docs
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Dashboard Grid -->
+    <main class="dashboard-grid">
+
+      <!-- LEFT COLUMN: Sensor Telemetry Panel -->
+      <section class="card sensor-panel">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Sensor Telemetry Input</h2>
+            <p class="card-desc">Adjust physical telemetry readings or choose a scenario preset</p>
+          </div>
+          <button type="button" class="btn-sm btn-outline" id="btnReset">Reset Defaults</button>
+        </div>
+
+        <!-- Scenario Quick Presets -->
+        <div class="presets-container">
+          <span class="preset-label">Quick Presets:</span>
+          <div class="preset-chips">
+            <button class="preset-chip active" data-preset="fresh">🟢 Factory Fresh</button>
+            <button class="preset-chip" data-preset="residential">🟡 Typical Home</button>
+            <button class="preset-chip" data-preset="winter">❄️ Winter Cold Snap</button>
+            <button class="preset-chip" data-preset="depleted">🔴 Critical Battery</button>
+            <button class="preset-chip fault" data-preset="glitch">⚠️ Glitch Fault (422)</button>
+          </div>
+        </div>
+
+        <!-- Sensor Inputs Form -->
+        <form id="sensorForm" class="sensors-form">
+
+          <!-- Sensor 1: Battery Voltage -->
+          <div class="sensor-group">
+            <div class="sensor-meta">
+              <label for="battery_v" class="sensor-title">
+                <span>1. Battery Voltage</span>
+                <span class="sensor-unit">(Volts)</span>
+              </label>
+              <div class="input-stepper-wrap">
+                <input type="number" id="battery_v" name="battery_v" step="0.01" min="2.0" max="5.0" class="num-input font-mono" required>
+                <span class="unit-tag">V</span>
+              </div>
+            </div>
+            <div class="slider-wrap">
+              <input type="range" id="battery_v_slider" min="2.0" max="5.0" step="0.01" class="sensor-slider">
+              <div class="slider-hints">
+                <span>Cut-off (2.0V)</span>
+                <span class="hint-mid">Nominal (3.7V - 3.85V)</span>
+                <span>Full Charge (4.2V - 5.0V)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sensor 2: Ambient Temperature -->
+          <div class="sensor-group">
+            <div class="sensor-meta">
+              <label for="temp_c" class="sensor-title">
+                <span>2. Ambient Temperature</span>
+                <span class="sensor-unit">(°Celsius)</span>
+              </label>
+              <div class="input-stepper-wrap">
+                <input type="number" id="temp_c" name="temp_c" step="0.1" min="-40" max="85" class="num-input font-mono" required>
+                <span class="unit-tag">°C</span>
+              </div>
+            </div>
+            <div class="slider-wrap">
+              <input type="range" id="temp_c_slider" min="-40" max="85" step="0.5" class="sensor-slider temp-slider">
+              <div class="slider-hints">
+                <span>Sub-zero (-40°C)</span>
+                <span class="hint-mid">Room Temp (20°C - 28°C)</span>
+                <span>Extreme Heat (+85°C)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sensor 3: Daily Rings -->
+          <div class="sensor-group">
+            <div class="sensor-meta">
+              <label for="rings_per_day" class="sensor-title">
+                <span>3. Daily Activity</span>
+                <span class="sensor-unit">(Rings / Day)</span>
+              </label>
+              <div class="input-stepper-wrap">
+                <input type="number" id="rings_per_day" name="rings_per_day" step="1" min="0" max="1000" class="num-input font-mono" required>
+                <span class="unit-tag">rings</span>
+              </div>
+            </div>
+            <div class="slider-wrap">
+              <input type="range" id="rings_per_day_slider" min="0" max="50" step="1" class="sensor-slider">
+              <div class="slider-hints">
+                <span>Vacant (0)</span>
+                <span class="hint-mid">Standard (5 - 15)</span>
+                <span>High Traffic (50+)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sensor 4: Wi-Fi RSSI -->
+          <div class="sensor-group">
+            <div class="sensor-meta">
+              <label for="wifi_rssi_dbm" class="sensor-title">
+                <span>4. Wi-Fi Signal Strength</span>
+                <span class="sensor-unit">(RSSI dBm)</span>
+              </label>
+              <div class="wifi-indicator-wrap">
+                <div class="wifi-bars" id="wifiBars">
+                  <span class="bar b1"></span>
+                  <span class="bar b2"></span>
+                  <span class="bar b3"></span>
+                  <span class="bar b4"></span>
+                </div>
+                <div class="input-stepper-wrap">
+                  <input type="number" id="wifi_rssi_dbm" name="wifi_rssi_dbm" step="1" min="-110" max="-1" class="num-input font-mono" required>
+                  <span class="unit-tag">dBm</span>
+                </div>
+              </div>
+            </div>
+            <div class="slider-wrap">
+              <input type="range" id="wifi_rssi_dbm_slider" min="-110" max="-10" step="1" class="sensor-slider">
+              <div class="slider-hints">
+                <span>Faint Edge (-110 dBm)</span>
+                <span class="hint-mid">Adequate (-65 dBm)</span>
+                <span>Router Proximity (-10 dBm)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sensor 5: Battery Age -->
+          <div class="sensor-group">
+            <div class="sensor-meta">
+              <label for="age_months" class="sensor-title">
+                <span>5. Cell Operating Age</span>
+                <span class="sensor-unit">(Months)</span>
+              </label>
+              <div class="input-stepper-wrap">
+                <input type="number" id="age_months" name="age_months" step="1" min="0" max="120" class="num-input font-mono" required>
+                <span class="unit-tag">mo</span>
+              </div>
+            </div>
+            <div class="slider-wrap">
+              <input type="range" id="age_months_slider" min="0" max="60" step="1" class="sensor-slider">
+              <div class="slider-hints">
+                <span>New (0)</span>
+                <span class="hint-mid">1 - 2 Years (12 - 24 mo)</span>
+                <span>Heavy Degradation (60+ mo)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Error Alert Banner -->
+          <div class="alert-box alert-error hidden" id="errorBanner">
+            <div class="alert-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            </div>
+            <div class="alert-content">
+              <div class="alert-title" id="errorTitle">Invalid Sensor Telemetry (HTTP 422)</div>
+              <div class="alert-msg" id="errorMsg">The API refused this reading due to physical sensor bounds.</div>
+            </div>
+          </div>
+
+          <!-- Action Button -->
+          <div class="form-actions">
+            <button type="submit" class="btn-primary" id="btnPredict">
+              <span class="btn-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              </span>
+              <span class="btn-text">Run Edge Prediction</span>
+              <span class="spinner hidden" id="predictSpinner"></span>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- RIGHT COLUMN: Prediction & Micro-Latency Display -->
+      <section class="prediction-column">
+
+        <!-- Prediction Hero Card -->
+        <div class="card prediction-card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Predicted Battery Life</h2>
+              <p class="card-desc">Evaluated by Team 01 Neural Network (5 → 32 → 32 → 1)</p>
+            </div>
+            <div class="badge-status badge-healthy" id="healthBadge">Healthy</div>
+          </div>
+
+          <div class="prediction-body">
+            <!-- Animated Battery Graphic -->
+            <div class="battery-graphic-wrap">
+              <div class="battery-cell-outer">
+                <div class="battery-terminal"></div>
+                <div class="battery-level-bar" id="batteryLevelBar" style="width: 75%;">
+                  <div class="battery-shimmer"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Big Days Counter -->
+            <div class="prediction-display">
+              <div class="days-value font-mono" id="predDays">113.71</div>
+              <div class="days-unit">Estimated Days Remaining</div>
+            </div>
+
+            <!-- Projection Metadata Cards -->
+            <div class="projection-grid">
+              <div class="proj-box">
+                <span class="proj-label">Estimated Depletion Date</span>
+                <span class="proj-val" id="predDepletionDate">--</span>
+              </div>
+              <div class="proj-box">
+                <span class="proj-label">Recommended Action</span>
+                <span class="proj-val" id="predAction">Normal operation</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Micro-Latency Stage-Wise Timing Card -->
+        <div class="card timing-card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Inference & Server Micro-Timing</h3>
+              <p class="card-desc">Non-overlapping execution breakdown from <code>POST /predict</code></p>
+            </div>
+            <div class="total-latency font-mono" id="totalLatencyBadge">0.00 ms</div>
+          </div>
+
+          <!-- Stacked Timing Bar -->
+          <div class="timing-bar-container">
+            <div class="stacked-bar">
+              <div class="bar-seg seg-parse" id="barParse" style="width: 15%;" title="Parse stage"></div>
+              <div class="bar-seg seg-norm" id="barNorm" style="width: 15%;" title="Normalise stage"></div>
+              <div class="bar-seg seg-infer" id="barInfer" style="width: 55%;" title="Inference stage"></div>
+              <div class="bar-seg seg-build" id="barBuild" style="width: 15%;" title="Build stage"></div>
+            </div>
+          </div>
+
+          <!-- Timing Metrics Grid -->
+          <div class="timing-stages-grid">
+            <div class="stage-metric">
+              <div class="stage-dot dot-parse"></div>
+              <div class="stage-info">
+                <span class="stage-name">Parse</span>
+                <span class="stage-val font-mono" id="valParse">0.00 ms</span>
+              </div>
+            </div>
+            <div class="stage-metric">
+              <div class="stage-dot dot-norm"></div>
+              <div class="stage-info">
+                <span class="stage-name">Normalise</span>
+                <span class="stage-val font-mono" id="valNorm">0.00 ms</span>
+              </div>
+            </div>
+            <div class="stage-metric">
+              <div class="stage-dot dot-infer"></div>
+              <div class="stage-info">
+                <span class="stage-name">Inference</span>
+                <span class="stage-val font-mono" id="valInfer">0.00 ms</span>
+              </div>
+            </div>
+            <div class="stage-metric">
+              <div class="stage-dot dot-build"></div>
+              <div class="stage-info">
+                <span class="stage-name">Build</span>
+                <span class="stage-val font-mono" id="valBuild">0.00 ms</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- BOTTOM ROW: Hardware Feasibility & Batch Fleet Studio -->
+      <section class="card hardware-card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Edge AI Hardware Feasibility (Missions 2 & 4)</h2>
+            <p class="card-desc">Dynamic evaluation from <code>GET /model_info</code> against ESP32-S3 SRAM constraints</p>
+          </div>
+          <div class="badge-sram" id="sramStatusBadge">Fits 300 KB SRAM</div>
+        </div>
+
+        <div class="hw-grid">
+          <!-- SRAM Meter -->
+          <div class="sram-meter-box">
+            <div class="sram-header">
+              <span class="sram-title">Float32 Model Footprint</span>
+              <span class="sram-usage font-mono" id="sramUsageText">5,124 / 307,200 Bytes (1.67%)</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" id="sramProgressFill" style="width: 1.67%;"></div>
+            </div>
+            <div class="sram-subtext">
+              Allocates only <strong>5.12 KB</strong> out of 300 KB available SRAM on ESP32-S3. Int8 theoretical footprint is only <strong>1.28 KB</strong>.
+            </div>
+          </div>
+
+          <!-- Dynamic Layer Specs Table -->
+          <div class="table-responsive">
+            <table class="model-table">
+              <thead>
+                <tr>
+                  <th>Layer</th>
+                  <th>Input</th>
+                  <th>Output</th>
+                  <th>Parameters</th>
+                  <th>Float32 Size</th>
+                  <th>MACs</th>
+                </tr>
+              </thead>
+              <tbody id="layersTableBody">
+                <tr><td colspan="6" class="text-center">Loading model architecture...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Batch Fleet Studio -->
+      <section class="card fleet-card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">IoT Fleet Batch Prediction Studio</h2>
+            <p class="card-desc">Vectorized multi-sensor inference via <code>POST /predict_batch</code></p>
+          </div>
+          <button type="button" class="btn-sm btn-primary" id="btnRunFleet">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            Evaluate Fleet (3 Doorbells)
+          </button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="model-table fleet-table">
+            <thead>
+              <tr>
+                <th>Doorbell Device</th>
+                <th>Voltage</th>
+                <th>Temp</th>
+                <th>Rings/Day</th>
+                <th>Wi-Fi RSSI</th>
+                <th>Age</th>
+                <th>Predicted Days</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="fleetTableBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+        <div class="fleet-footer" id="fleetFooter">
+          <span>Batch throughput: <strong id="fleetTimingText">--</strong></span>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>EDGI AI Team 01 — Siddharth (ML), Rakshith (FastAPI & Web), Monica (Integration), Saakshi (Testing)</p>
+      <p class="footer-sub">Smart Video Doorbell Remaining Useful Life Prediction System</p>
+    </footer>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
