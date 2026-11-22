@@ -4,6 +4,10 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Base API endpoint resolver (supports direct server URL, Codespaces, and file:/// previews)
+  const isDirectOrCodespaces = window.location.port === '8000' || window.location.hostname.includes('github.dev');
+  const API_BASE = isDirectOrCodespaces ? '' : 'http://127.0.0.1:8000';
+
   // Preset Telemetry Configurations
   const PRESETS = {
     fresh: {
@@ -167,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
   async function checkHealth() {
     const t0 = performance.now();
     try {
-      const res = await fetch('/health');
+      const res = await fetch(`${API_BASE}/health`);
       const ping = Math.round(performance.now() - t0);
       if (res.ok) {
         const data = await res.json();
@@ -189,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 4. Fetch Dynamic Model Architecture Specs (/model_info)
   async function fetchModelInfo() {
     try {
-      const res = await fetch('/model_info');
+      const res = await fetch(`${API_BASE}/model_info`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
 
@@ -245,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
     errorBanner.classList.add('hidden');
 
     try {
-      const res = await fetch('/predict', {
+      const res = await fetch(`${API_BASE}/predict`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(reading)
@@ -375,7 +379,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }))
       };
 
-      const res = await fetch('/predict_batch', {
+      const res = await fetch(`${API_BASE}/predict_batch`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
