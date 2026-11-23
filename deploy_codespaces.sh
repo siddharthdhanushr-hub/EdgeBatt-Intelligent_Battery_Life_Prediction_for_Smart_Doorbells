@@ -35,36 +35,37 @@ if [ "$MODE" = "container" ] || [ "$MODE" = "docker" ] || [ "$MODE" = "auto" ]; 
 elif [ "$MODE" = "local" ] || [ "$MODE" = "direct" ]; then
     echo "[1/2] Setting up Python environment..."
     
-    PY_BIN="python3"
-    if ! command -v python3 &> /dev/null; then
-        PY_BIN="python"
-    fi
-    echo "Using system Python: $($PY_BIN --version 2>&1) ($PY_BIN)"
-
-    # Create virtual environment if it doesn't exist to comply with PEP 668
-    if [ ! -d ".venv" ]; then
-        echo "[Notice] Creating virtual environment in .venv..."
-        $PY_BIN -m venv .venv
+    # Install uv for ultra-fast, SSL-resilient package installation
+    if ! command -v uv &> /dev/null && [ ! -f "$HOME/.local/bin/uv" ]; then
+        echo "[Notice] Installing ultra-fast, SSL-resilient installer (uv)..."
+        curl -LsSf https://astral.sh/uv/install.sh | sh 2>/dev/null || true
     fi
 
-    # Activate virtual environment
-    echo "[Notice] Activating virtual environment..."
-    source .venv/bin/activate
-
-    # Install torch from dedicated CPU index (prevents PyPI 15s metadata timeout)
-    if ! python -c "import torch" &> /dev/null; then
-        echo "[Notice] Installing PyTorch (CPU) from PyTorch wheel index..."
-        pip install --default-timeout=120 torch --index-url https://download.pytorch.org/whl/cpu
+    if [ -f "$HOME/.local/bin/uv" ]; then
+        export PATH="$HOME/.local/bin:$PATH"
     fi
 
-    # Install remaining requirements
-    echo "[Notice] Installing remaining requirements..."
-    pip install --default-timeout=120 -r requirements.txt
+    if command -v uv &> /dev/null; then
+        echo "[Notice] Using uv for fast installation..."
+        if [ ! -d ".venv" ]; then
+            uv venv .venv
+        fi
+        source .venv/bin/activate
+        uv pip install -r requirements.txt
+    else
+        # Fallback to standard venv and pip
+        if [ ! -d ".venv" ]; then
+            python3 -m venv .venv || python -m venv .venv
+        fi
+        source .venv/bin/activate
+        pip install --no-cache-dir --trusted-host pypi.org --trusted-host files.pythonhosted.org -r requirements.txt
+    fi
 
     echo "[2/2] Starting Uvicorn server on http://0.0.0.0:8000..."
     echo "Press Ctrl+C to stop the server."
     echo ""
     uvicorn app.main:app --host 0.0.0.0 --port 8000
+
 
 
 
