@@ -11,6 +11,17 @@ echo "=================================================================="
 
 MODE="${1:-auto}"
 
+# 1. Critical Cloud VM Network Fix:
+# In Azure/Codespaces, default MTU 1500 causes TLS packet fragmentation drops
+# (SSLEOFError / connection timeout to CDN servers). MTU 1350 solves this completely.
+echo "[Notice] Applying network optimizations (MTU 1350 & IPv4 priority)..."
+sudo ip link set dev eth0 mtu 1350 2>/dev/null || true
+for iface in $(ip -o link show 2>/dev/null | awk -F': ' '{print $2}' | grep -v lo); do
+    sudo ip link set dev "$iface" mtu 1350 2>/dev/null || true
+done
+sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1 2>/dev/null || true
+sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1 2>/dev/null || true
+
 # Check if Docker is available in the current environment
 if ! command -v docker &> /dev/null; then
     echo "[Notice] 'docker' command is not installed in this Codespace environment."
@@ -34,38 +45,29 @@ if [ "$MODE" = "container" ] || [ "$MODE" = "docker" ] || [ "$MODE" = "auto" ]; 
     echo "IMPORTANT: In the Codespace 'Ports' tab, right-click Port 8000 and select 'Port Visibility -> Public'!"
 elif [ "$MODE" = "local" ] || [ "$MODE" = "direct" ]; then
     echo "[1/2] Setting up Python environment..."
-    
+
     if [ ! -d ".venv" ]; then
         echo "[Notice] Creating virtual environment (.venv)..."
         python3 -m venv .venv || python -m venv .venv
     fi
     source .venv/bin/activate
 
-    if [ -f "$HOME/.local/bin/uv" ]; then
-        UV_CMD="$HOME/.local/bin/uv"
-    elif command -v uv &> /dev/null; then
-        UV_CMD="uv"
-    else
-        UV_CMD=""
-    fi
+    echo "[Notice] Installing PyTorch (CPU-only, lightweight)..."
+    pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
 
-    echo "[Notice] Installing dependencies via high-speed mirror..."
-    if [ -n "$UV_CMD" ]; then
-        $UV_CMD pip install -i https://mirrors.aliyun.com/pypi/simple/ --extra-index-url https://download.pytorch.org/whl/cpu -r requirements.txt
-    else
-        pip install -i https://mirrors.aliyun.com/pypi/simple/ --extra-index-url https://download.pytorch.org/whl/cpu -r requirements.txt
-    fi
+    echo "[Notice] Installing FastAPI server runtime..."
+    pip install --no-cache-dir fastapi "uvicorn[standard]" pydantic numpy requests
 
     echo "[2/2] Starting Uvicorn server on http://0.0.0.0:8000..."
-    echo "Press Ctrl+C to stop the server."
+    echo "=================================================================="
+    echo ">> SERVER IS LIVE AT http://0.0.0.0:8000 <<"
+    echo ">> IN CODESPACES: GO TO 'PORTS' TAB -> PORT 8000 -> VISIBILITY: PUBLIC <<"
+    echo "=================================================================="
     echo ""
-    uvicorn app.main:app --host 0.0.0.0 --port 8000
-
-
-
-
+    exec uvicorn app.main:app --host 0.0.0.0 --port 8000
 
 else
     echo "Usage: ./deploy_codespaces.sh [container|local]"
     exit 1
 fi
+
