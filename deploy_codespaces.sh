@@ -41,8 +41,13 @@ elif [ "$MODE" = "local" ] || [ "$MODE" = "direct" ]; then
 
     # Auto-install requirements if uvicorn or torch are missing
     if ! $PY_BIN -c "import uvicorn, fastapi, torch" &> /dev/null; then
+        echo "[Notice] Checking pip installation..."
+        if ! $PY_BIN -m pip --version &> /dev/null; then
+            echo "[Notice] Bootstrapping pip via ensurepip / apt..."
+            $PY_BIN -m ensurepip --upgrade 2>/dev/null || (sudo apt-get update && sudo apt-get install -y python3-pip) || true
+        fi
         echo "[Notice] Installing dependencies from requirements.txt..."
-        $PY_BIN -m pip install -r requirements.txt
+        $PY_BIN -m pip install -r requirements.txt || pip3 install -r requirements.txt
     fi
 
     echo "[2/2] Starting Uvicorn server on http://0.0.0.0:8000..."
