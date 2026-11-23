@@ -33,35 +33,39 @@ if [ "$MODE" = "container" ] || [ "$MODE" = "docker" ] || [ "$MODE" = "auto" ]; 
     echo "Container is running at http://localhost:8000"
     echo "IMPORTANT: In the Codespace 'Ports' tab, right-click Port 8000 and select 'Port Visibility -> Public'!"
 elif [ "$MODE" = "local" ] || [ "$MODE" = "direct" ]; then
-    echo "[1/2] Detecting Python environment..."
+    echo "[1/2] Setting up Python environment..."
     
-    # Check which Python binary has pip or is available
-    if python -m pip --version &> /dev/null; then
+    PY_BIN="python3"
+    if ! command -v python3 &> /dev/null; then
         PY_BIN="python"
-    elif python3 -m pip --version &> /dev/null; then
-        PY_BIN="python3"
-    elif command -v python &> /dev/null; then
-        PY_BIN="python"
-    else
-        PY_BIN="python3"
     fi
-    echo "Using Python: $($PY_BIN --version 2>&1) ($PY_BIN)"
+    echo "Using system Python: $($PY_BIN --version 2>&1) ($PY_BIN)"
 
-    # Check and bootstrap pip if missing
-    if ! $PY_BIN -m pip --version &> /dev/null; then
-        echo "[Notice] Bootstrapping pip via get-pip.py..."
-        curl -sS https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
-        $PY_BIN /tmp/get-pip.py || python3 /tmp/get-pip.py
+    # Create virtual environment if it doesn't exist to comply with PEP 668
+    if [ ! -d ".venv" ]; then
+        echo "[Notice] Creating virtual environment in .venv..."
+        $PY_BIN -m venv .venv
     fi
 
-    # Install dependencies from requirements.txt
-    echo "[Notice] Installing dependencies from requirements.txt..."
-    $PY_BIN -m pip install --no-cache-dir -r requirements.txt
+    # Activate virtual environment
+    echo "[Notice] Activating virtual environment..."
+    source .venv/bin/activate
+
+    # Install torch from dedicated CPU index (prevents PyPI 15s metadata timeout)
+    if ! python -c "import torch" &> /dev/null; then
+        echo "[Notice] Installing PyTorch (CPU) from PyTorch wheel index..."
+        pip install --default-timeout=120 torch --index-url https://download.pytorch.org/whl/cpu
+    fi
+
+    # Install remaining requirements
+    echo "[Notice] Installing remaining requirements..."
+    pip install --default-timeout=120 -r requirements.txt
 
     echo "[2/2] Starting Uvicorn server on http://0.0.0.0:8000..."
     echo "Press Ctrl+C to stop the server."
     echo ""
-    $PY_BIN -m uvicorn app.main:app --host 0.0.0.0 --port 8000
+    uvicorn app.main:app --host 0.0.0.0 --port 8000
+
 
 
 else
