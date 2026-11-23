@@ -3,7 +3,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      network: host
     image: edgeai1-battery-api:latest
     container_name: edgeai1-battery-api
     ports:
