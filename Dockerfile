@@ -23,8 +23,7 @@ RUN groupadd -g 10001 appuser && \
 
 # Copy runtime-only dependencies and install
 COPY requirements-runtime.txt .
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements-runtime.txt
+RUN pip install --no-cache-dir --default-timeout=100 --retries=5 -r requirements-runtime.txt
 
 # Copy entrypoint, app package, model artifacts, and static UI
 COPY app.py .
