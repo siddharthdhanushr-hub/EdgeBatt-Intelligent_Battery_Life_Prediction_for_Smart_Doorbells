@@ -1,50 +1,49 @@
 # ==============================================================================
-# Dockerfile -- Production Container for EDGI AI Team 01 (EdgeBatt API)
-# Optimized for GitHub Codespaces & Cloud Container Deployment
+# Dockerfile -- Production Container for EdgeBatt Battery Prediction API
+# Containerization Specification
 # ==============================================================================
 FROM python:3.11-slim
 
-# Prevent Python from writing .pyc files and enable unbuffered logging
+# Prevent Python from writing pyc files and enable unbuffered logging
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PORT=8000
 
-# Install curl for container health check
+# Install curl for container healthcheck
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Set working directory inside container
+# Set /app as working directory
 WORKDIR /app
 
-# Create non-root user for security best practices
-RUN groupadd -r appuser && useradd -r -g appuser appuser
+# Create non-root appuser (UID 10001)
+RUN groupadd -g 10001 appuser && \
+    useradd -u 10001 -g appuser -s /bin/bash -m appuser
 
-# Copy requirements and install CPU-optimized PyTorch and dependencies
-COPY requirements.txt .
+# Copy runtime-only dependencies and install
+COPY requirements-runtime.txt .
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+    pip install --no-cache-dir -r requirements-runtime.txt
 
-# Copy application source code, models, static dashboard, and dataset
+# Copy entrypoint, app package, model artifacts, and static UI
+COPY app.py .
 COPY app/ ./app/
 COPY model/ ./model/
 COPY static/ ./static/
-COPY data/ ./data/
-COPY client/ ./client/
-COPY *.py ./
 
-# Set ownership of /app to appuser
+# Set ownership to appuser
 RUN chown -R appuser:appuser /app
 
-# Switch to non-root user
+# Run as non-root appuser
 USER appuser
 
-# Expose FastAPI service port
+# Expose port 8000
 EXPOSE 8000
 
-# Container Healthcheck (pings /health endpoint)
+# Define Docker /health check
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-    CMD curl -f http://localhost:8000/health || exit 1
+    CMD curl -f http://127.0.0.1:8000/health || exit 1
 
-# Launch production Uvicorn server with 1 worker
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Starts with python app.py
+CMD ["python", "app.py"]

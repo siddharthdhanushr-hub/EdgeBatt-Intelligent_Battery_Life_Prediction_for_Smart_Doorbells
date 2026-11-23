@@ -2,19 +2,26 @@
   "name": "Edge AI Assignment 1 - EdgeBatt Battery API (Team 01)",
   "image": "mcr.microsoft.com/devcontainers/python:3.11",
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "enableNonRootDocker": "true",
+      "moby": "false"
+    }
   },
-  "postCreateCommand": "pip install -r requirements.txt",
+  "postCreateCommand": "python -m venv .venv && .venv/bin/pip install --upgrade pip && .venv/bin/pip install -r requirements.txt",
   "forwardPorts": [8000],
   "portsAttributes": {
     "8000": {
-      "label": "EdgeBatt Battery API & Dashboard",
+      "label": "battery-api",
       "onAutoForward": "openBrowser",
       "elevateIfNeeded": false
     }
   },
   "customizations": {
     "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": ".venv/bin/python"
+      },
       "extensions": [
         "ms-python.python",
         "ms-toolsai.jupyter",
