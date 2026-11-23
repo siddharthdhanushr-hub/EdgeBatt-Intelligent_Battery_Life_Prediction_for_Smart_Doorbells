@@ -33,10 +33,23 @@ if [ "$MODE" = "container" ] || [ "$MODE" = "docker" ] || [ "$MODE" = "auto" ]; 
     echo "Container is running at http://localhost:8000"
     echo "IMPORTANT: In the Codespace 'Ports' tab, right-click Port 8000 and select 'Port Visibility -> Public'!"
 elif [ "$MODE" = "local" ] || [ "$MODE" = "direct" ]; then
-    echo "[1/2] Starting Uvicorn server on http://0.0.0.0:8000..."
+    echo "[1/2] Verifying Python environment..."
+    PY_BIN="python3"
+    if ! command -v python3 &> /dev/null; then
+        PY_BIN="python"
+    fi
+
+    # Auto-install requirements if uvicorn or torch are missing
+    if ! $PY_BIN -c "import uvicorn, fastapi, torch" &> /dev/null; then
+        echo "[Notice] Installing dependencies from requirements.txt..."
+        $PY_BIN -m pip install -r requirements.txt
+    fi
+
+    echo "[2/2] Starting Uvicorn server on http://0.0.0.0:8000..."
     echo "Press Ctrl+C to stop the server."
     echo ""
-    uvicorn app.main:app --host 0.0.0.0 --port 8000
+    $PY_BIN -m uvicorn app.main:app --host 0.0.0.0 --port 8000
+
 else
     echo "Usage: ./deploy_codespaces.sh [container|local]"
     exit 1
